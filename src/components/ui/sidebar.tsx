@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot@1.1.2";
-import { VariantProps, cva } from "class-variance-authority@0.7.1";
-import { PanelLeftIcon } from "lucide-react@0.487.0";
+import { Slot } from "@radix-ui/react-slot";
+import { VariantProps, cva } from "class-variance-authority";
+import { PanelLeftIcon } from "lucide-react";
 
 import { useIsMobile } from "./use-mobile";
 import { cn } from "./utils";
@@ -90,7 +90,9 @@ function SidebarProvider({
 
   // Helper to toggle the sidebar.
   const toggleSidebar = React.useCallback(() => {
-    return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open);
+    return isMobile
+      ? setOpenMobile((prev: boolean) => !prev)
+      : setOpen((prev: boolean) => !prev);
   }, [isMobile, setOpen, setOpenMobile]);
 
   // Adds a keyboard shortcut to toggle the sidebar.
@@ -267,7 +269,7 @@ function SidebarTrigger({
       variant="ghost"
       size="icon"
       className={cn("size-7", className)}
-      onClick={(event) => {
+      onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event);
         toggleSidebar();
       }}
