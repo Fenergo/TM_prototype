@@ -1,5 +1,14 @@
 /* Custom styling adjustments */
 
+/* Teal color for suspicious transaction toggle - Pantone 3265 C */
+:root {
+  --teal-3265: #00B2A9;
+}
+
+button[role="switch"][data-state="checked"] {
+  background-color: var(--teal-3265) !important;
+}
+
 /* KPI Card styling - make boxes smaller with larger text */
 .kpi-card {
   padding: 0.5rem !important; /* Further reduced padding for more compact look */
@@ -46,4 +55,13 @@
 .kpi-card .w-4 {
   width: 0.875rem !important;
   height: 0.875rem !important;
+}
+
+/* Custom teal switch for suspicious transactions */
+[data-slot="switch"][data-state="checked"] {
+  background-color: var(--teal-3265) !important;
+}
+
+[data-slot="switch"][data-state="checked"]:hover {
+  background-color: #009890 !important;
 }
