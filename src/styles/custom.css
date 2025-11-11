@@ -1,0 +1,46 @@
+/* Custom styling adjustments */
+
+/* Reduce overall font sizes by 10% for tables, forms, and general content */
+table, 
+.table,
+form,
+input,
+textarea,
+select,
+label,
+p:not(.kpi-value),
+span:not(.kpi-value),
+div:not(.kpi-card):not(.kpi-value) {
+  font-size: 90%;
+}
+
+/* KPI Card styling - make boxes smaller with larger text */
+.kpi-card {
+  padding: 0.75rem !important; /* Reduced from default padding */
+}
+
+.kpi-card .card-header {
+  padding-bottom: 0.5rem !important;
+}
+
+.kpi-card .card-content {
+  padding-top: 0.5rem !important;
+}
+
+/* Increase KPI values by 15% */
+.kpi-value {
+  font-size: 115% !important;
+}
+
+/* Reduce spacing in KPI cards */
+.kpi-card .text-2xl {
+  font-size: 2.3rem !important; /* 15% larger than reduced size */
+}
+
+.kpi-card .text-3xl {
+  font-size: 2.875rem !important; /* 15% larger than reduced size */
+}
+
+.kpi-card .text-xl {
+  font-size: 1.84rem !important; /* 15% larger than reduced size */
+}

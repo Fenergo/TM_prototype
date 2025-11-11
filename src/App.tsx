@@ -8,6 +8,7 @@ import { QualityAssurance } from './components/QualityAssurance';
 import { TuningLab } from './components/TuningLab';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider } from './components/ui/sidebar';
 import { Bell, BarChart3, FileSearch, Inbox, Mail, Target, Settings, Shield } from 'lucide-react';
+import fenergoLogo from './assets/fen_logo.svg.png';
 
 type View = 'alerts' | 'investigation' | 'cases' | 'analytics' | 'rfi' | 'qa' | 'tuning';
 
@@ -27,9 +28,12 @@ export default function App() {
       <div className="flex min-h-screen w-full bg-slate-50">
         <Sidebar>
           <SidebarContent>
-            <div className="p-6 border-b">
-              <h1 className="text-slate-900">TM Platform</h1>
-              <p className="text-slate-500 text-sm">Transaction Monitoring</p>
+            <div className="p-4 border-b flex items-center gap-3">
+              <img src={fenergoLogo} alt="Fenergo" className="h-8" />
+              <div>
+                <h1 className="text-slate-900 text-base font-semibold">TM Platform</h1>
+                <p className="text-slate-500 text-xs">Transaction Monitoring</p>
+              </div>
             </div>
             
             <SidebarGroup>

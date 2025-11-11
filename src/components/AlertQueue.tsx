@@ -107,47 +107,47 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
       </div>
 
       <div className="grid grid-cols-5 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500">Total Alerts</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{stats.total}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{stats.total}</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500">Pending Review</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{stats.pending}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{stats.pending}</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500">In Review</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{stats.inReview}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{stats.inReview}</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               Aged
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{stats.aged}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{stats.aged}</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500">High Priority</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{stats.highPriority}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{stats.highPriority}</div>
           </CardContent>
         </Card>
       </div>

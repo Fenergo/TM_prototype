@@ -61,66 +61,66 @@ export function QualityAssurance() {
       </div>
 
       <div className="grid grid-cols-5 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500">Total Samples</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{samples.length}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{samples.length}</div>
             <p className="text-xs text-slate-500 mt-1">This month</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-green-500" />
               Passed
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">
               {samples.filter(s => s.status === 'Passed').length}
             </div>
             <p className="text-xs text-slate-500 mt-1">94% pass rate</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <XCircle className="w-4 h-4 text-red-500" />
               Failed
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">
               {samples.filter(s => s.status === 'Failed').length}
             </div>
             <p className="text-xs text-slate-500 mt-1">Requires remediation</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               Pending
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">
               {samples.filter(s => s.status === 'Pending Review').length}
             </div>
             <p className="text-xs text-slate-500 mt-1">Awaiting review</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-blue-500" />
               Improvement
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-green-600">+3%</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-green-600 kpi-value">+3%</div>
             <p className="text-xs text-slate-500 mt-1">vs last month</p>
           </CardContent>
         </Card>

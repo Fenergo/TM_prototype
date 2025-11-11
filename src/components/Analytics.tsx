@@ -288,48 +288,48 @@ export function Analytics() {
 
         <TabsContent value="model" className="space-y-6">
           <div className="grid grid-cols-4 gap-4">
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="kpi-card">
+              <CardHeader className="pb-3 card-header">
                 <CardTitle className="text-sm text-slate-500">Model Accuracy</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-slate-900 mb-2">87.3%</div>
+              <CardContent className="card-content">
+                <div className="text-2xl font-semibold text-slate-900 kpi-value mb-2">87.3%</div>
                 <div className="flex items-center gap-1 text-sm text-green-600">
                   <TrendingUp className="w-4 h-4" />
                   <span>+2.1%</span>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="kpi-card">
+              <CardHeader className="pb-3 card-header">
                 <CardTitle className="text-sm text-slate-500">Precision</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-slate-900 mb-2">68.4%</div>
+              <CardContent className="card-content">
+                <div className="text-2xl font-semibold text-slate-900 kpi-value mb-2">68.4%</div>
                 <div className="flex items-center gap-1 text-sm text-green-600">
                   <TrendingUp className="w-4 h-4" />
                   <span>+5.2%</span>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="kpi-card">
+              <CardHeader className="pb-3 card-header">
                 <CardTitle className="text-sm text-slate-500">Recall</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-slate-900 mb-2">91.2%</div>
+              <CardContent className="card-content">
+                <div className="text-2xl font-semibold text-slate-900 kpi-value mb-2">91.2%</div>
                 <div className="flex items-center gap-1 text-sm text-red-600">
                   <TrendingDown className="w-4 h-4" />
                   <span>-1.3%</span>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="kpi-card">
+              <CardHeader className="pb-3 card-header">
                 <CardTitle className="text-sm text-slate-500">Alert Volume</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-slate-900 mb-2">192</div>
+              <CardContent className="card-content">
+                <div className="text-2xl font-semibold text-slate-900 kpi-value mb-2">192</div>
                 <div className="flex items-center gap-1 text-sm text-red-600">
                   <TrendingDown className="w-4 h-4" />
                   <span>-8</span>
@@ -405,48 +405,48 @@ export function Analytics() {
 
         <TabsContent value="sla" className="space-y-6">
           <div className="grid grid-cols-4 gap-4">
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="kpi-card">
+              <CardHeader className="pb-3 card-header">
                 <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500" />
                   On-Time Closure
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-slate-900">94.2%</div>
+              <CardContent className="card-content">
+                <div className="text-2xl font-semibold text-slate-900 kpi-value">94.2%</div>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="kpi-card">
+              <CardHeader className="pb-3 card-header">
                 <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-amber-500" />
                   SLA Breaches
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-slate-900">6</div>
+              <CardContent className="card-content">
+                <div className="text-2xl font-semibold text-slate-900 kpi-value">6</div>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="kpi-card">
+              <CardHeader className="pb-3 card-header">
                 <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
                   <Clock className="w-4 h-4 text-blue-500" />
                   Avg Response Time
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-slate-900">4.2 hrs</div>
+              <CardContent className="card-content">
+                <div className="text-2xl font-semibold text-slate-900 kpi-value">4.2 hrs</div>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="pb-3">
+            <Card className="kpi-card">
+              <CardHeader className="pb-3 card-header">
                 <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
                   <Activity className="w-4 h-4 text-purple-500" />
                   Backlog
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-slate-900">23</div>
+              <CardContent className="card-content">
+                <div className="text-2xl font-semibold text-slate-900 kpi-value">23</div>
               </CardContent>
             </Card>
           </div>

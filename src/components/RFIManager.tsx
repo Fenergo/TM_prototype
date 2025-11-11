@@ -101,49 +101,49 @@ export function RFIManager() {
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500">Total RFIs</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{mockRFIs.length}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{mockRFIs.length}</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <Mail className="w-4 h-4 text-blue-500" />
               Sent
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">
               {mockRFIs.filter(r => r.status === 'Sent' || r.status === 'Awaiting').length}
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <Clock className="w-4 h-4 text-amber-500" />
               Awaiting Response
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">
               {mockRFIs.filter(r => r.status === 'Awaiting').length}
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-green-500" />
               Responded
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">
               {mockRFIs.filter(r => r.status === 'Responded').length}
             </div>
           </CardContent>

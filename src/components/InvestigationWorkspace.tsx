@@ -113,54 +113,54 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               Alert Score
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{alert.alertScore}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{alert.alertScore}</div>
             <p className="text-xs text-slate-500 mt-1">ML-enhanced risk</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <Shield className="w-4 h-4" />
               Entity Risk Score
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{entity.riskScore}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{entity.riskScore}</div>
             <p className="text-xs text-slate-500 mt-1">
               {entity.pepStatus && 'PEP • '}
               {entity.kycStatus}
             </p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <AlertCircle className="w-4 h-4" />
               Prior Alerts
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">{alert.priorAlerts}</div>
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">{alert.priorAlerts}</div>
             <p className="text-xs text-slate-500 mt-1">Last 12 months</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="kpi-card">
+          <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <Wallet className="w-4 h-4" />
               Total Alerted Value
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-slate-900">
+          <CardContent className="card-content">
+            <div className="text-2xl font-semibold text-slate-900 kpi-value">
               {entity.accounts[0]?.currency || 'USD'} {entity.accounts.reduce((sum, acc) => sum + acc.balance, 0).toLocaleString()}
             </div>
             <p className="text-xs text-slate-500 mt-1">{entity.accounts.length} accounts</p>
