@@ -6,9 +6,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Search, Filter, Download, RefreshCw, User, AlertTriangle, Clock } from 'lucide-react';
+import { Search, Filter, Download, RefreshCw, User, AlertTriangle, Clock, Info } from 'lucide-react';
 import { Checkbox } from './ui/checkbox';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface AlertQueueProps {
   onAlertClick: (alertId: string, entityId: string) => void;
@@ -20,8 +21,9 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
   const [selectedAlerts, setSelectedAlerts] = useState<Set<string>>(new Set());
   const [visibleColumns, setVisibleColumns] = useState<Set<string>>(new Set([
-    'alertId', 'issueDate', 'alertScore', 'subjectEntity', 'triggeredRules', 
-    'status', 'alertAge', 'owner', 'priority', 'slaDue'
+    'alertId', 'issueDate', 'alertDate', 'alertScore', 'subjectEntity', 'entityType',
+    'priorAlerts', 'triggeredRules', 'counterparty', 'status', 'alertAge', 
+    'owner', 'caseId', 'businessUnit', 'region'
   ]));
 
   const filteredAlerts = useMemo(() => {
@@ -204,14 +206,20 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
                 <DropdownMenuCheckboxItem checked={visibleColumns.has('issueDate')} onCheckedChange={() => toggleColumn('issueDate')}>
                   Issue Date
                 </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked={visibleColumns.has('alertDate')} onCheckedChange={() => toggleColumn('alertDate')}>
+                  Alert Date
+                </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked={visibleColumns.has('alertScore')} onCheckedChange={() => toggleColumn('alertScore')}>
                   Alert Score
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked={visibleColumns.has('subjectEntity')} onCheckedChange={() => toggleColumn('subjectEntity')}>
                   Subject Entity
                 </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked={visibleColumns.has('entityType')} onCheckedChange={() => toggleColumn('entityType')}>
+                  Entity Type
+                </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked={visibleColumns.has('priorAlerts')} onCheckedChange={() => toggleColumn('priorAlerts')}>
-                  Prior Alerts
+                  # Prior Alerts
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked={visibleColumns.has('triggeredRules')} onCheckedChange={() => toggleColumn('triggeredRules')}>
                   Triggered Rules
@@ -220,7 +228,7 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
                   Counterparty
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked={visibleColumns.has('status')} onCheckedChange={() => toggleColumn('status')}>
-                  Status
+                  Alert Status
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked={visibleColumns.has('alertAge')} onCheckedChange={() => toggleColumn('alertAge')}>
                   Alert Age
@@ -228,17 +236,14 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
                 <DropdownMenuCheckboxItem checked={visibleColumns.has('owner')} onCheckedChange={() => toggleColumn('owner')}>
                   Owner
                 </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={visibleColumns.has('priority')} onCheckedChange={() => toggleColumn('priority')}>
-                  Priority
+                <DropdownMenuCheckboxItem checked={visibleColumns.has('caseId')} onCheckedChange={() => toggleColumn('caseId')}>
+                  Case
                 </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={visibleColumns.has('slaDue')} onCheckedChange={() => toggleColumn('slaDue')}>
-                  SLA Due
+                <DropdownMenuCheckboxItem checked={visibleColumns.has('businessUnit')} onCheckedChange={() => toggleColumn('businessUnit')}>
+                  Business Unit
                 </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={visibleColumns.has('rfiStatus')} onCheckedChange={() => toggleColumn('rfiStatus')}>
-                  RFI Status
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked={visibleColumns.has('amount')} onCheckedChange={() => toggleColumn('amount')}>
-                  Amount
+                <DropdownMenuCheckboxItem checked={visibleColumns.has('region')} onCheckedChange={() => toggleColumn('region')}>
+                  Region
                 </DropdownMenuCheckboxItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -256,30 +261,173 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
           )}
         </CardHeader>
         <CardContent>
+          <div className="flex items-center gap-2 mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <Info className="w-4 h-4 text-blue-600 flex-shrink-0" />
+            <p className="text-sm text-blue-900">
+              Select multiple alerts below if you wish to bulk assign, close or create cases
+            </p>
+          </div>
           <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox />
-                  </TableHead>
-                  {visibleColumns.has('alertId') && <TableHead>Alert ID</TableHead>}
-                  {visibleColumns.has('issueDate') && <TableHead>Issue Date</TableHead>}
-                  {visibleColumns.has('alertScore') && <TableHead>Score</TableHead>}
-                  {visibleColumns.has('subjectEntity') && <TableHead>Subject Entity</TableHead>}
-                  {visibleColumns.has('priorAlerts') && <TableHead>Prior</TableHead>}
-                  {visibleColumns.has('triggeredRules') && <TableHead>Triggered Rules</TableHead>}
-                  {visibleColumns.has('counterparty') && <TableHead>Counterparty</TableHead>}
-                  {visibleColumns.has('status') && <TableHead>Status</TableHead>}
-                  {visibleColumns.has('alertAge') && <TableHead>Age</TableHead>}
-                  {visibleColumns.has('owner') && <TableHead>Owner</TableHead>}
-                  {visibleColumns.has('priority') && <TableHead>Priority</TableHead>}
-                  {visibleColumns.has('slaDue') && <TableHead>SLA Due</TableHead>}
-                  {visibleColumns.has('rfiStatus') && <TableHead>RFI</TableHead>}
-                  {visibleColumns.has('amount') && <TableHead className="text-right">Amount</TableHead>}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <TooltipProvider>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-12">
+                      <Checkbox />
+                    </TableHead>
+                    {visibleColumns.has('alertId') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Alert ID</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Unique ID for alert</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('issueDate') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Issue Date</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Date of first suspicious event</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('alertDate') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Alert Date</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Date alert was generated</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('alertScore') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Alert Score</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Risk score of alert</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('subjectEntity') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Subject Entity</TooltipTrigger>
+                          <TooltipContent>
+                            <p>What entity the alert has been raised on</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('entityType') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Entity Type</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Business or Individual</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('priorAlerts') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help"># Prior Alerts</TooltipTrigger>
+                          <TooltipContent>
+                            <p>How many prior alerts have been raised on the entity</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('triggeredRules') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Triggered Rules</TooltipTrigger>
+                          <TooltipContent>
+                            <p>How many rules triggered for the alert</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('counterparty') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Counterparty</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Who is the counterparty in the suspicious activity</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('status') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Alert Status</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Pending Review, In Review, Closed No Issue, Escalated Issue - Report pending, Filed & Complete</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('alertAge') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Alert Age</TooltipTrigger>
+                          <TooltipContent>
+                            <p>If an alert goes over a predefined age and becomes an aged alert, identify with an exclamation mark</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('owner') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Owner</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Who owns the case or not assigned</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('caseId') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Case</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Identify if the alert has progressed to a case, including a case number</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('businessUnit') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Business Unit</TooltipTrigger>
+                          <TooltipContent>
+                            <p>Corporate or Retail</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                    {visibleColumns.has('region') && (
+                      <TableHead>
+                        <Tooltip>
+                          <TooltipTrigger className="cursor-help">Region</TooltipTrigger>
+                          <TooltipContent>
+                            <p>What region is this alert assigned to e.g. UK, IRL, US, Cayman</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TableHead>
+                    )}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                 {filteredAlerts.map((alert) => (
                   <TableRow 
                     key={alert.id}
@@ -300,6 +448,11 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
                         {new Date(alert.issueDate).toLocaleDateString()}
                       </TableCell>
                     )}
+                    {visibleColumns.has('alertDate') && (
+                      <TableCell className="text-slate-600 text-sm">
+                        {new Date(alert.alertDate).toLocaleDateString()}
+                      </TableCell>
+                    )}
                     {visibleColumns.has('alertScore') && (
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -315,10 +468,12 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
                     )}
                     {visibleColumns.has('subjectEntity') && (
                       <TableCell>
-                        <div>
-                          <div className="text-slate-900">{alert.subjectEntity}</div>
-                          <div className="text-xs text-slate-500">{alert.entityType}</div>
-                        </div>
+                        <div className="text-slate-900">{alert.subjectEntity}</div>
+                      </TableCell>
+                    )}
+                    {visibleColumns.has('entityType') && (
+                      <TableCell>
+                        <Badge variant="outline">{alert.entityType}</Badge>
                       </TableCell>
                     )}
                     {visibleColumns.has('priorAlerts') && (
@@ -332,18 +487,7 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
                     )}
                     {visibleColumns.has('triggeredRules') && (
                       <TableCell>
-                        <div className="flex flex-wrap gap-1">
-                          {alert.triggeredRules.slice(0, 2).map((rule, idx) => (
-                            <Badge key={idx} variant="secondary" className="text-xs">
-                              {rule}
-                            </Badge>
-                          ))}
-                          {alert.triggeredRules.length > 2 && (
-                            <Badge variant="secondary" className="text-xs">
-                              +{alert.triggeredRules.length - 2}
-                            </Badge>
-                          )}
-                        </div>
+                        <Badge variant="secondary">{alert.triggeredRules.length}</Badge>
                       </TableCell>
                     )}
                     {visibleColumns.has('counterparty') && (
@@ -355,7 +499,7 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
                     {visibleColumns.has('alertAge') && (
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          {alert.aged && <Clock className="w-4 h-4 text-amber-500" />}
+                          {alert.aged && <AlertTriangle className="w-4 h-4 text-amber-500" />}
                           <span className={alert.aged ? 'text-amber-700' : ''}>
                             {alert.alertAge}d
                           </span>
@@ -367,39 +511,22 @@ export function AlertQueue({ onAlertClick }: AlertQueueProps) {
                         {alert.owner || <span className="text-slate-400">Unassigned</span>}
                       </TableCell>
                     )}
-                    {visibleColumns.has('priority') && (
-                      <TableCell>{getPriorityBadge(alert.priority)}</TableCell>
-                    )}
-                    {visibleColumns.has('slaDue') && (
-                      <TableCell>
-                        <div className="text-sm text-slate-600">
-                          {new Date(alert.slaDue).toLocaleDateString()}
-                          {alert.slaRisk && (
-                            <Badge variant="destructive" className="ml-2 text-xs">At Risk</Badge>
-                          )}
-                        </div>
+                    {visibleColumns.has('caseId') && (
+                      <TableCell className="text-slate-600 text-sm">
+                        {alert.caseId || <span className="text-slate-400">—</span>}
                       </TableCell>
                     )}
-                    {visibleColumns.has('rfiStatus') && (
-                      <TableCell>
-                        {alert.rfiStatus !== 'None' ? (
-                          <Badge variant="outline">{alert.rfiStatus}</Badge>
-                        ) : (
-                          <span className="text-slate-400">—</span>
-                        )}
-                      </TableCell>
+                    {visibleColumns.has('businessUnit') && (
+                      <TableCell className="text-slate-600 text-sm">{alert.businessUnit}</TableCell>
                     )}
-                    {visibleColumns.has('amount') && alert.amount && (
-                      <TableCell className="text-right">
-                        <div className="text-slate-900">
-                          {alert.currency} {alert.amount.toLocaleString()}
-                        </div>
-                      </TableCell>
+                    {visibleColumns.has('region') && (
+                      <TableCell className="text-slate-600 text-sm">{alert.region}</TableCell>
                     )}
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
+            </TooltipProvider>
           </div>
           <div className="mt-4 flex items-center justify-between text-sm text-slate-500">
             <div>Showing {filteredAlerts.length} of {mockAlerts.length} alerts</div>
