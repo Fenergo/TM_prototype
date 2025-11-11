@@ -28,6 +28,7 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
   const [activeTab, setActiveTab] = useState('overview');
   const [customerOnboardDate, setCustomerOnboardDate] = useState<Date>();
   const [lastRemediationType, setLastRemediationType] = useState('');
+  const [investigationStatus, setInvestigationStatus] = useState('in-progress');
 
   const alert = useMemo(() => 
     alertId ? mockAlerts.find(a => a.id === alertId) : null, 
@@ -61,7 +62,7 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-start justify-between">
-        <div>
+        <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-slate-900">{alert.id}</h1>
             <Badge variant={alert.priority === 'High' ? 'destructive' : 'default'}>
@@ -74,20 +75,33 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
               </Badge>
             )}
           </div>
-          <p className="text-slate-500">
+          <p className="text-slate-500 mb-3">
             Investigating {entity.name} • {entity.type} • {entity.jurisdiction}
           </p>
+          <div className="flex items-center gap-2">
+            <Label className="text-sm font-medium text-slate-700">Investigation Status:</Label>
+            <Select value={investigationStatus} onValueChange={setInvestigationStatus}>
+              <SelectTrigger className="w-[180px] h-8">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="in-progress">In Progress</SelectItem>
+                <SelectItem value="complete">Complete</SelectItem>
+                <SelectItem value="alerted">Alerted</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">Assign RFI</Button>
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
                 Add to Case
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem>Move to Case</DropdownMenuItem>
               <DropdownMenuItem>Add Alert</DropdownMenuItem>
               <DropdownMenuItem>Rework Required</DropdownMenuItem>
@@ -487,6 +501,89 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
                 <div className="mt-4 text-sm text-slate-500">
                   {alert.attachments} file(s) attached
                 </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-6 mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  Historical Notes
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-64">
+                  <div className="space-y-4">
+                    <div className="text-sm">
+                      <div className="flex items-center gap-2 text-slate-500 mb-1">
+                        <span className="font-medium text-slate-900">Sarah Chen</span>
+                        <span>•</span>
+                        <span>2025-01-15 14:30</span>
+                      </div>
+                      <p className="text-slate-700">Reviewed transaction patterns. Customer shows regular monthly transfers consistent with stated business activity. No red flags identified.</p>
+                    </div>
+                    <Separator />
+                    <div className="text-sm">
+                      <div className="flex items-center gap-2 text-slate-500 mb-1">
+                        <span className="font-medium text-slate-900">Michael Roberts</span>
+                        <span>•</span>
+                        <span>2025-01-10 09:15</span>
+                      </div>
+                      <p className="text-slate-700">Initial alert review completed. Transaction amounts align with customer profile. Requested additional documentation for verification.</p>
+                    </div>
+                    <Separator />
+                    <div className="text-sm">
+                      <div className="flex items-center gap-2 text-slate-500 mb-1">
+                        <span className="font-medium text-slate-900">Jennifer Park</span>
+                        <span>•</span>
+                        <span>2025-01-08 16:45</span>
+                      </div>
+                      <p className="text-slate-700">Customer contacted via phone. Confirmed legitimate business purpose for transactions. Awaiting supporting documentation.</p>
+                    </div>
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Paperclip className="w-4 h-4" />
+                  Historical Documents
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-64">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm p-2 hover:bg-slate-50 rounded-md cursor-pointer border border-slate-200">
+                      <Paperclip className="h-4 w-4 text-slate-500" />
+                      <span className="flex-1 text-slate-900">Invoice_2025_001.pdf</span>
+                      <span className="text-xs text-slate-500">2025-01-14</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm p-2 hover:bg-slate-50 rounded-md cursor-pointer border border-slate-200">
+                      <Paperclip className="h-4 w-4 text-slate-500" />
+                      <span className="flex-1 text-slate-900">Bank_Statement_Dec2024.pdf</span>
+                      <span className="text-xs text-slate-500">2025-01-12</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm p-2 hover:bg-slate-50 rounded-md cursor-pointer border border-slate-200">
+                      <Paperclip className="h-4 w-4 text-slate-500" />
+                      <span className="flex-1 text-slate-900">Business_License.jpg</span>
+                      <span className="text-xs text-slate-500">2025-01-10</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm p-2 hover:bg-slate-50 rounded-md cursor-pointer border border-slate-200">
+                      <Paperclip className="h-4 w-4 text-slate-500" />
+                      <span className="flex-1 text-slate-900">ID_Verification.pdf</span>
+                      <span className="text-xs text-slate-500">2025-01-08</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm p-2 hover:bg-slate-50 rounded-md cursor-pointer border border-slate-200">
+                      <Paperclip className="h-4 w-4 text-slate-500" />
+                      <span className="flex-1 text-slate-900">Customer_Agreement.pdf</span>
+                      <span className="text-xs text-slate-500">2025-01-05</span>
+                    </div>
+                  </div>
+                </ScrollArea>
               </CardContent>
             </Card>
           </div>
