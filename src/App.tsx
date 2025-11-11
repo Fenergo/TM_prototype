@@ -26,14 +26,11 @@ export default function App() {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-slate-50">
-        <Sidebar>
+        <Sidebar className="w-48">
           <SidebarContent>
-            <div className="p-4 border-b flex items-center gap-3">
+            <div className="p-4 border-b flex flex-col items-center gap-2">
               <img src={fenergoLogo} alt="Fenergo" className="h-8" />
-              <div>
-                <h1 className="text-slate-900 text-base font-semibold">TM Platform</h1>
-                <p className="text-slate-500 text-xs">Transaction Monitoring</p>
-              </div>
+              <h1 className="text-slate-900 text-sm font-semibold">TM Platform</h1>
             </div>
             
             <SidebarGroup>

@@ -17,6 +17,7 @@ import { format } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
+import { DraggableKPIGrid } from './DraggableKPIGrid';
 
 interface InvestigationWorkspaceProps {
   alertId: string | null;
@@ -112,7 +113,7 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <DraggableKPIGrid columns={4}>
         <Card className="kpi-card">
           <CardHeader className="pb-3 card-header">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
@@ -166,7 +167,7 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
             <p className="text-xs text-slate-500 mt-1">{entity.accounts.length} accounts</p>
           </CardContent>
         </Card>
-      </div>
+      </DraggableKPIGrid>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
