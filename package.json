@@ -32,6 +32,7 @@
             "class-variance-authority": "^0.7.1",
             "clsx": "*",
             "cmdk": "^1.1.1",
+            "date-fns": "^4.1.0",
             "embla-carousel-react": "^8.6.0",
             "input-otp": "^1.4.2",
             "lucide-react": "^0.487.0",
@@ -50,9 +51,9 @@
             "@types/node": "^20.10.0",
             "@types/react": "^18.3.5",
             "@types/react-dom": "^18.3.0",
-            "typescript": "^5.6.3",
             "@vitejs/plugin-react": "^5.1.0",
             "@vitejs/plugin-react-swc": "^3.10.2",
+            "typescript": "^5.6.3",
             "vite": "6.3.5"
       },
       "scripts": {

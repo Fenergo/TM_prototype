@@ -7,9 +7,16 @@ import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { ScrollArea } from './ui/scroll-area';
 import { Separator } from './ui/separator';
-import { AlertCircle, TrendingUp, Users, Wallet, FileText, Paperclip, Clock, Shield, Network, Calendar } from 'lucide-react';
+import { AlertCircle, TrendingUp, Users, Wallet, FileText, Paperclip, Clock, Shield, Network, Calendar, ChevronDown } from 'lucide-react';
 import { EntityGraph } from './EntityGraph';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { cn } from './ui/utils';
+import { format } from 'date-fns';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 interface InvestigationWorkspaceProps {
   alertId: string | null;
@@ -19,6 +26,8 @@ interface InvestigationWorkspaceProps {
 export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorkspaceProps) {
   const [notes, setNotes] = useState('');
   const [activeTab, setActiveTab] = useState('overview');
+  const [customerOnboardDate, setCustomerOnboardDate] = useState<Date>();
+  const [lastRemediationType, setLastRemediationType] = useState('');
 
   const alert = useMemo(() => 
     alertId ? mockAlerts.find(a => a.id === alertId) : null, 
@@ -71,7 +80,20 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
         </div>
         <div className="flex gap-2">
           <Button variant="outline">Assign RFI</Button>
-          <Button variant="outline">Add to Case</Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Add to Case
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>Move to Case</DropdownMenuItem>
+              <DropdownMenuItem>Add Alert</DropdownMenuItem>
+              <DropdownMenuItem>Rework Required</DropdownMenuItem>
+              <DropdownMenuItem>Close - Not Suspicious</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button>Close Alert</Button>
         </div>
       </div>
@@ -120,12 +142,12 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
           <CardHeader className="pb-3">
             <CardTitle className="text-sm text-slate-500 flex items-center gap-2">
               <Wallet className="w-4 h-4" />
-              Total Exposure
+              Total Alerted Value
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-slate-900">
-              {entity.accounts.reduce((sum, acc) => sum + acc.balance, 0).toLocaleString()}
+              {entity.accounts[0]?.currency || 'USD'} {entity.accounts.reduce((sum, acc) => sum + acc.balance, 0).toLocaleString()}
             </div>
             <p className="text-xs text-slate-500 mt-1">{entity.accounts.length} accounts</p>
           </CardContent>
@@ -217,6 +239,32 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
                 <div>
                   <div className="text-sm text-slate-500 mb-1">KYC Status</div>
                   <div className="text-slate-900">{entity.kycStatus}</div>
+                </div>
+                <Separator />
+                <div>
+                  <div className="text-sm text-slate-500 mb-1">Customer Onboard Date</div>
+                  <Input
+                    type="date"
+                    value={customerOnboardDate ? format(customerOnboardDate, 'yyyy-MM-dd') : ''}
+                    onChange={(e) => setCustomerOnboardDate(e.target.value ? new Date(e.target.value) : undefined)}
+                    className="mt-1"
+                  />
+                </div>
+                <Separator />
+                <div>
+                  <div className="text-sm text-slate-500 mb-1">Last Remediation Type</div>
+                  <Select value={lastRemediationType} onValueChange={setLastRemediationType}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select remediation type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low-to-medium">Low to Medium</SelectItem>
+                      <SelectItem value="medium-to-high">Medium to High</SelectItem>
+                      <SelectItem value="low-to-high">Low to High</SelectItem>
+                      <SelectItem value="high-to-medium">High to Medium</SelectItem>
+                      <SelectItem value="high-to-low">High to Low</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <Separator />
                 <div>
