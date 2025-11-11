@@ -67,8 +67,13 @@ export interface Transaction {
   toEntity: string;
   fromAccount: string;
   toAccount: string;
+  fromCountry: string;
+  toCountry: string;
+  counterpartyFI: string;
   status: string;
   flagged: boolean;
+  alertId?: string;
+  suspicious: boolean;
 }
 
 export interface Case {
@@ -343,8 +348,13 @@ export const mockTransactions: Transaction[] = [
     toEntity: 'Offshore Trust Services',
     fromAccount: 'ACC-10234',
     toAccount: 'ACC-98765',
+    fromCountry: 'Luxembourg',
+    toCountry: 'Cayman Islands',
+    counterpartyFI: 'Butterfield Bank',
     status: 'Completed',
-    flagged: true
+    flagged: true,
+    alertId: 'ALT-2024-001234',
+    suspicious: true
   },
   {
     id: 'TXN-20241108-00198',
@@ -356,8 +366,13 @@ export const mockTransactions: Transaction[] = [
     toEntity: 'Malta Trading Ltd',
     fromAccount: 'ACC-10234',
     toAccount: 'ACC-54321',
+    fromCountry: 'Luxembourg',
+    toCountry: 'Malta',
+    counterpartyFI: 'Bank of Valletta',
     status: 'Completed',
-    flagged: true
+    flagged: true,
+    alertId: 'ALT-2024-001234',
+    suspicious: false
   },
   {
     id: 'TXN-20241108-00167',
@@ -369,8 +384,48 @@ export const mockTransactions: Transaction[] = [
     toEntity: 'Horizon Capital Partners Ltd',
     fromAccount: 'ACC-11111',
     toAccount: 'ACC-10234',
+    fromCountry: 'Switzerland',
+    toCountry: 'Luxembourg',
+    counterpartyFI: 'Credit Suisse',
     status: 'Completed',
-    flagged: false
+    flagged: false,
+    suspicious: false
+  },
+  {
+    id: 'TXN-20241107-00456',
+    date: '2024-11-07T16:20:00',
+    type: 'SWIFT Transfer',
+    amount: 850000,
+    currency: 'USD',
+    fromEntity: 'Zhang Wei',
+    toEntity: 'Pacific Trade Corp',
+    fromAccount: 'ACC-22334',
+    toAccount: 'ACC-99887',
+    fromCountry: 'Hong Kong',
+    toCountry: 'Singapore',
+    counterpartyFI: 'DBS Bank',
+    status: 'Completed',
+    flagged: true,
+    alertId: 'ALT-2024-001189',
+    suspicious: true
+  },
+  {
+    id: 'TXN-20241105-00289',
+    date: '2024-11-05T09:15:00',
+    type: 'Domestic Wire',
+    amount: 95000,
+    currency: 'USD',
+    fromEntity: 'Zhang Wei',
+    toEntity: 'Pacific Trade Corp',
+    fromAccount: 'ACC-22334',
+    toAccount: 'ACC-99887',
+    fromCountry: 'Hong Kong',
+    toCountry: 'Hong Kong',
+    counterpartyFI: 'HSBC',
+    status: 'Completed',
+    flagged: true,
+    alertId: 'ALT-2024-001189',
+    suspicious: true
   }
 ];
 

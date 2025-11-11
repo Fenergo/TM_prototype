@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { DraggableKPIGrid } from './DraggableKPIGrid';
+import { Switch } from './ui/switch';
 
 interface InvestigationWorkspaceProps {
   alertId: string | null;
@@ -27,9 +28,11 @@ interface InvestigationWorkspaceProps {
 export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorkspaceProps) {
   const [notes, setNotes] = useState('');
   const [activeTab, setActiveTab] = useState('overview');
+  const [transactionTab, setTransactionTab] = useState('all');
   const [customerOnboardDate, setCustomerOnboardDate] = useState<Date>();
   const [lastRemediationType, setLastRemediationType] = useState('');
   const [investigationStatus, setInvestigationStatus] = useState('in-progress');
+  const [suspiciousTransactions, setSuspiciousTransactions] = useState<Set<string>>(new Set());
 
   const alert = useMemo(() => 
     alertId ? mockAlerts.find(a => a.id === alertId) : null, 
@@ -43,10 +46,49 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
 
   const relatedTransactions = useMemo(() => {
     if (!entity) return [];
-    return mockTransactions.filter(t => 
+    const txns = mockTransactions.filter(t => 
       t.fromEntity === entity.name || t.toEntity === entity.name
     );
+    // Initialize suspicious state from mock data
+    txns.forEach(txn => {
+      if (txn.suspicious && !suspiciousTransactions.has(txn.id)) {
+        setSuspiciousTransactions(prev => new Set(prev).add(txn.id));
+      }
+    });
+    return txns;
   }, [entity]);
+
+  const totalAlertedValue = useMemo(() => {
+    if (!alert) return 0;
+    return relatedTransactions
+      .filter(t => t.alertId === alert.id)
+      .reduce((sum, t) => sum + t.amount, 0);
+  }, [alert, relatedTransactions]);
+
+  const filteredTransactions = useMemo(() => {
+    if (transactionTab === 'all') return relatedTransactions;
+    if (transactionTab === 'alerted') return relatedTransactions.filter(t => t.alertId);
+    
+    const now = new Date();
+    const daysCutoff = transactionTab === '30days' ? 30 : transactionTab === '60days' ? 60 : 90;
+    return relatedTransactions.filter(t => {
+      const txnDate = new Date(t.date);
+      const daysDiff = Math.floor((now.getTime() - txnDate.getTime()) / (1000 * 60 * 60 * 24));
+      return daysDiff <= daysCutoff;
+    });
+  }, [relatedTransactions, transactionTab]);
+
+  const toggleSuspicious = (txnId: string) => {
+    setSuspiciousTransactions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(txnId)) {
+        newSet.delete(txnId);
+      } else {
+        newSet.add(txnId);
+      }
+      return newSet;
+    });
+  };
 
   if (!alert || !entity) {
     return (
@@ -162,9 +204,9 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
           </CardHeader>
           <CardContent className="card-content">
             <div className="text-2xl font-semibold text-slate-900 kpi-value">
-              {entity.accounts[0]?.currency || 'USD'} {entity.accounts.reduce((sum, acc) => sum + acc.balance, 0).toLocaleString()}
+              {alert?.currency || 'EUR'} {totalAlertedValue.toLocaleString()}
             </div>
-            <p className="text-xs text-slate-500 mt-1">{entity.accounts.length} accounts</p>
+            <p className="text-xs text-slate-500 mt-1">{relatedTransactions.filter(t => t.alertId === alert?.id).length} transactions</p>
           </CardContent>
         </Card>
       </DraggableKPIGrid>
@@ -304,31 +346,71 @@ export function InvestigationWorkspace({ alertId, entityId }: InvestigationWorks
 
           <Card>
             <CardHeader>
-              <CardTitle>Accounts</CardTitle>
+              <CardTitle>Transaction Dashboard</CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Account ID</TableHead>
-                    <TableHead>Account Type</TableHead>
-                    <TableHead className="text-right">Balance</TableHead>
-                    <TableHead>Currency</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {entity.accounts.map((account) => (
-                    <TableRow key={account.accountId}>
-                      <TableCell className="text-blue-600">{account.accountId}</TableCell>
-                      <TableCell>{account.accountType}</TableCell>
-                      <TableCell className="text-right">
-                        {account.balance.toLocaleString()}
-                      </TableCell>
-                      <TableCell>{account.currency}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <Tabs value={transactionTab} onValueChange={setTransactionTab} className="w-full">
+                <TabsList>
+                  <TabsTrigger value="all">All Transactions</TabsTrigger>
+                  <TabsTrigger value="alerted">Alerted Transactions</TabsTrigger>
+                  <TabsTrigger value="30days">30 Days</TabsTrigger>
+                  <TabsTrigger value="60days">60 Days</TabsTrigger>
+                  <TabsTrigger value="90days">90 Days</TabsTrigger>
+                </TabsList>
+                <TabsContent value={transactionTab} className="mt-4">
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Alert ID</TableHead>
+                          <TableHead>Transaction Date</TableHead>
+                          <TableHead>Originator</TableHead>
+                          <TableHead>Country</TableHead>
+                          <TableHead>Account ID</TableHead>
+                          <TableHead>Beneficiary</TableHead>
+                          <TableHead>Ben. Country</TableHead>
+                          <TableHead>Account ID</TableHead>
+                          <TableHead className="text-right">Amount</TableHead>
+                          <TableHead>Currency</TableHead>
+                          <TableHead>Transaction ID</TableHead>
+                          <TableHead>Counterparty FI</TableHead>
+                          <TableHead>Suspicious</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredTransactions.map((txn) => (
+                          <TableRow key={txn.id}>
+                            <TableCell className="text-blue-600 text-sm">
+                              {txn.alertId || <span className="text-slate-400">—</span>}
+                            </TableCell>
+                            <TableCell className="text-sm">
+                              {new Date(txn.date).toLocaleString()}
+                            </TableCell>
+                            <TableCell className="text-sm">{txn.fromEntity}</TableCell>
+                            <TableCell className="text-sm">{txn.fromCountry}</TableCell>
+                            <TableCell className="text-blue-600 text-sm">{txn.fromAccount}</TableCell>
+                            <TableCell className="text-sm">{txn.toEntity}</TableCell>
+                            <TableCell className="text-sm">{txn.toCountry}</TableCell>
+                            <TableCell className="text-blue-600 text-sm">{txn.toAccount}</TableCell>
+                            <TableCell className="text-right text-sm">
+                              {txn.amount.toLocaleString()}
+                            </TableCell>
+                            <TableCell className="text-sm">{txn.currency}</TableCell>
+                            <TableCell className="text-blue-600 text-sm">{txn.id}</TableCell>
+                            <TableCell className="text-sm">{txn.counterpartyFI}</TableCell>
+                            <TableCell>
+                              <Switch
+                                checked={suspiciousTransactions.has(txn.id)}
+                                onCheckedChange={() => toggleSuspicious(txn.id)}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </CardContent>
           </Card>
 
