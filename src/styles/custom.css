@@ -2,31 +2,48 @@
 
 /* KPI Card styling - make boxes smaller with larger text */
 .kpi-card {
-  padding: 0.75rem !important; /* Reduced from default padding */
+  padding: 0.5rem !important; /* Further reduced padding for more compact look */
 }
 
 .kpi-card .card-header {
-  padding-bottom: 0.5rem !important;
+  padding: 0.5rem !important;
+  padding-bottom: 0.25rem !important;
 }
 
 .kpi-card .card-content {
-  padding-top: 0.5rem !important;
+  padding: 0.5rem !important;
+  padding-top: 0.25rem !important;
 }
 
-/* Increase KPI values by 15% */
-.kpi-value {
-  font-size: 115% !important;
-}
-
-/* KPI card font sizes - 15% larger */
+/* Adjust KPI card heights to be 50% smaller */
 .kpi-card .text-2xl {
-  font-size: 2.3rem !important; /* 15% larger */
+  font-size: 1.5rem !important; /* Reduced from 2.3rem for compact fit */
+  line-height: 1.2 !important;
 }
 
 .kpi-card .text-3xl {
-  font-size: 2.875rem !important; /* 15% larger */
+  font-size: 1.875rem !important; /* Reduced for compact fit */
+  line-height: 1.2 !important;
 }
 
 .kpi-card .text-xl {
-  font-size: 1.84rem !important; /* 15% larger */
+  font-size: 1.25rem !important; /* Reduced for compact fit */
+  line-height: 1.2 !important;
+}
+
+/* Make supporting text in KPI cards smaller */
+.kpi-card .text-xs {
+  font-size: 0.65rem !important;
+  line-height: 1 !important;
+}
+
+.kpi-card .text-sm {
+  font-size: 0.75rem !important;
+  line-height: 1.1 !important;
+}
+
+/* Reduce icon sizes in KPI cards */
+.kpi-card .w-4 {
+  width: 0.875rem !important;
+  height: 0.875rem !important;
 }
