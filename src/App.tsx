@@ -28,8 +28,8 @@ export default function App() {
       <div className="flex min-h-screen w-full bg-slate-50">
         <Sidebar className="w-48">
           <SidebarContent>
-            <div className="p-4 border-b flex flex-col items-center gap-2">
-              <img src={fenergoLogo} alt="Fenergo" className="h-8" />
+            <div className="p-4 border-b flex items-center gap-3">
+              <img src={fenergoLogo} alt="Fenergo" className="h-6" />
               <h1 className="text-slate-900 text-sm font-semibold">TM Platform</h1>
             </div>
             
